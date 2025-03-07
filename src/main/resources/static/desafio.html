@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel Avanzado - Desafío</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4B0082;
+            --primary-dark: #38006c;
+            --secondary-color: #6A5ACD;
+            --accent-color: #9370DB;
+            --text-color: #2C2C54;
+            --light-text: #F5F5F5;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --gradient-start: #E9E4F0;
+            --gradient-end: #D3CCE3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            font-family: 'Montserrat', sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-color) 0%, rgba(147, 112, 219, 0) 70%);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        body::before {
+            top: -150px;
+            right: -100px;
+        }
+
+        body::after {
+            bottom: -120px;
+            left: -80px;
+        }
+
+        .container {
+            max-width: 100%;
+            width: 850px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 12px;
+            width: 100%;
+        }
+
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            letter-spacing: -0.5px;
+            margin-bottom: 5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1),
+                        0 3px 10px rgba(0, 0, 0, 0.05),
+                        0 0 0 1px rgba(75, 0, 130, 0.05);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15),
+                        0 5px 15px rgba(0, 0, 0, 0.08),
+                        0 0 0 1px rgba(75, 0, 130, 0.1);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .challenge-info {
+            padding-right: 20px;
+        }
+
+        .challenge-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .spiral-icon {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-right: 12px;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.15));
+        }
+
+        .challenge-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .challenge-description {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 0.2px;
+        }
+
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .progress-container::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(106, 90, 205, 0.2);
+            z-index: 1;
+        }
+
+        .level {
+            position: relative;
+            z-index: 2;
+            background-color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            border: 1px solid rgba(106, 90, 205, 0.2);
+        }
+
+        .level.completed {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .level.current {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 700;
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(75, 0, 130, 0.3);
+        }
+
+        .feature-list {
+            list-style-type: none;
+            margin: 0 0 25px 0;
+            padding: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            transition: transform 0.2s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+
+        .feature-icon {
+            margin-right: 10px;
+            color: var(--secondary-color);
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.1));
+        }
+
+        .challenge-media {
+            position: relative;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(75, 0, 130, 0.2);
+            aspect-ratio: 4/3;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .challenge-media:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px rgba(75, 0, 130, 0.3);
+        }
+
+        .preview-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(75, 0, 130, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .challenge-media:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .play-icon {
+            font-size: 3rem;
+            color: white;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.3));
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .challenge-media:hover .play-icon {
+            transform: scale(1.1);
+        }
+
+        .media-placeholder {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .media-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(75, 0, 130, 0.08);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(75, 0, 130, 0.1);
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(75, 0, 130, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(75, 0, 130, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(75, 0, 130, 0); }
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            text-decoration: none;
+            border-radius: 50px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(75, 0, 130, 0.25);
+            text-align: center;
+            letter-spacing: 0.5px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(75, 0, 130, 0.35);
+            background: linear-gradient(135deg, var(--primary-color) 20%, var(--secondary-color) 100%);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 4px 10px rgba(75, 0, 130, 0.25);
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        .countdown-timer {
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(75, 0, 130, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px dashed var(--secondary-color);
+        }
+
+        .countdown-timer p {
+            font-size: 0.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .timer {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .learning-outcomes {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .learning-outcomes h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .learning-outcomes h3::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--secondary-color), transparent);
+        }
+
+        .outcome-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .outcome-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(75, 0, 130, 0.1);
+        }
+
+        .outcome-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(75, 0, 130, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .outcome-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .outcome-item h4 {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .outcome-item p {
+            font-size: 0.8rem;
+            color: var(--text-color);
+        }
+
+        .faq-section {
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .faq-item {
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(75, 0, 130, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .faq-question {
+            font-weight: 500;
+            color: var(--primary-color);
+            padding: 10px 0;
+            cursor: pointer;
+            position: relative;
+            padding-right: 20px;
+        }
+
+        .faq-question::after {
+            content: "+";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 0 10px 0;
+            color: var(--text-color);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .note-decor {
+            position: absolute;
+            font-size: 5rem;
+            opacity: 0.06;
+            color: var(--primary-color);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .note-1 {
+            top: 10%;
+            right: 5%;
+            transform: rotate(15deg);
+        }
+
+        .note-2 {
+            bottom: 10%;
+            left: 5%;
+            transform: rotate(-10deg);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .challenge-info {
+                padding-right: 0;
+                order: 2;
+            }
+
+            .challenge-media {
+                order: 1;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .outcome-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 100%;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .challenge-heading {
+                font-size: 1.4rem;
+            }
+
+            .difficulty-badge {
+                top: 15px;
+                right: 15px;
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+
+            .outcome-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content-wrapper">
+        <div class="header">
+            <h1 class="title">Nivel Avanzado - Desafío</h1>
+        </div>
+
+        <div class="card">
+            <span class="note-decor note-1">♪</span>
+            <span class="note-decor note-2">♫</span>
+
+            <div class="difficulty-badge">
+                <span>★★★</span>
+                <span>Avanzado</span>
+            </div>
+
+            <div class="progress-container">
+                <div class="level completed">Básico</div>
+                <div class="level completed">Intermedio</div>
+                <div class="level current">Avanzado</div>
+                <div class="level">Experto</div>
+            </div>
+
+            <div class="content-grid">
+                <div class="challenge-info">
+                    <div class="challenge-title">
+                        <span class="spiral-icon">🌀</span>
+                        <h2 class="challenge-heading">Los Desafíos</h2>
+                    </div>
+
+                    <p class="challenge-description">
+                        Lleva tu habilidad auditiva al siguiente nivel con estos ejercicios diseñados para músicos avanzados.
+                    </p>
+
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <span class="feature-icon">✨</span>
+                            <span>Mejora tu capacidad para identificar intervalos complejos</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">🎹</span>
+                            <span>Técnicas para sacar canciones por oído en tiempo récord</span>
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">🎵</span>
+                            <span>Entrenamiento para reconocer progresiones avanzadas</span>
+                        </li>
+                    </ul>
+
+                    <a href="/videos_desafio.html" class="btn">
+                        <span>Ver Video</span>
+                        <span class="btn-icon">▶️</span>
+                    </a>
+
+                    <div class="countdown-timer">
+                        <p>Nueva lección disponible en:</p>
+                        <div class="timer">06:23:14</div>
+                    </div>
+                </div>
+
+                <div class="challenge-media">
+                    <div class="preview-container">
+                        <div class="media-placeholder">
+                            <span class="media-icon">🎼</span>
+                            <p>Descubre técnicas avanzadas de entrenamiento auditivo</p>
+                        </div>
+                        <div class="play-overlay">
+                            <span class="play-icon">▶️</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="learning-outcomes">
+                <h3>Lo que dominarás:</h3>
+                <div class="outcome-grid">
+                    <div class="outcome-item">
+                        <span class="outcome-icon">🎧</span>
+                        <h4>Reconocimiento instantáneo</h4>
+                        <p>Identificar acordes en tiempo real</p>
+                    </div>
+                    <div class="outcome-item">
+                        <span class="outcome-icon">🧠</span>
+                        <h4>Memoria auditiva</h4>
+                        <p>Recordar largas secuencias melódicas</p>
+                    </div>
+                    <div class="outcome-item">
+                        <span class="outcome-icon">🎸</span>
+                        <h4>Transcripción avanzada</h4>
+                        <p>Técnicas de transcripción profesional</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-section">
+                <div class="faq-item">
+                    <div class="faq-question">¿Cuánto tiempo necesito practicar al día?</div>
+                    <div class="faq-answer">Para resultados óptimos, recomendamos 1h-3h horas diarios de práctica consistente con los ejercicios proporcionados.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">¿Necesito conocimientos previos?</div>
+                    <div class="faq-answer">Sí, este nivel está diseñado para músicos que ya dominan los conceptos intermedios de entrenamiento auditivo.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Script para manejar las preguntas frecuentes
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                question.style.fontWeight = '500';
+                question.style.color = 'var(--primary-color)';
+            } else {
+                answer.style.display = 'block';
+                question.style.fontWeight = '700';
+                question.style.color = 'var(--secondary-color)';
+            }
+        });
+    });
+
+    // Script para el contador descendente
+    function updateTimer() {
+        const timer = document.querySelector('.timer');
+        const time = timer.textContent.split(':');
+        let hours = parseInt(time[0]);
+        let minutes = parseInt(time[1]);
+        let seconds = parseInt(time[2]);
+
+        seconds--;
+        if (seconds < 0) {
+            seconds = 59;
+            minutes--;
+            if (minutes < 0) {
+                minutes = 59;
+                hours--;
+                if (hours < 0) {
+                    hours = 23;
+                }
+            }
+        }
+
+        timer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    setInterval(updateTimer, 1000);
+
+    // Redirección al hacer clic en la sección de medios
+    document.querySelector('.challenge-media').addEventListener('click', () => {
+        window.location.href = '/videos_desafio.html';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel Básico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos base */
+        :root {
+            --primary-color: #0d47a1;
+            --primary-light: #5472d3;
+            --primary-dark: #002171;
+            --text-light: #ffffff;
+            --text-dark: #2c3e50;
+            --light-bg: #f5f9ff;
+            --card-bg: #ffffff;
+            --accent: #1a73e8;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e6f2ff 0%, #d0e5ff 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            color: var(--text-light);
+            padding: 2rem 0;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin: 0;
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Contenedor principal */
+        main {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Tarjetas de curso */
+        .video-curso {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 250px;
+        }
+
+        .video-curso:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .video-curso::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary-color);
+            opacity: 0.8;
+        }
+
+        .video-curso h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            margin: 0;
+            padding: 1.5rem 1.5rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-curso i {
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .video-curso p {
+            padding: 0 1.5rem;
+            margin: 0 0 1rem;
+            color: #4a5568;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .video-curso p.soon {
+            color: #e53e3e;
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 1rem 1.5rem;
+            padding: 0.5rem;
+            background-color: #fff5f5;
+            border-radius: 4px;
+            text-align: center;
+            border-left: 3px solid #fc8181;
+        }
+
+        .video-curso a {
+            text-decoration: none;
+            margin: 0 1.5rem 1.5rem;
+            display: block;
+        }
+
+        .video-curso a:last-child {
+            margin-top: auto;
+        }
+
+        /* Botones */
+        .video-curso button {
+            width: 100%;
+            background: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 6px;
+            padding: 0.75rem 1rem;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-curso button::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.6s;
+        }
+
+        .video-curso button:hover {
+            background: var(--primary-light);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+        }
+
+        .video-curso button:hover::after {
+            left: 100%;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Nivel Básico</h1>
+</header>
+<main>
+    <div class="video-curso">
+        <h3><i class="fas fa-piano"></i> Introducción al Piano</h3>
+        <p>Aprende la postura correcta, ubicación de notas y técnicas básicas para comenzar a tocar el piano.</p>
+        <a href="/videos_basicos.html">
+            <button><i class="fas fa-play-circle"></i> Ver Video</button>
+        </a>
+    </div>
+    <div class="video-curso">
+        <h3><i class="fas fa-music"></i> Escalas Básicas</h3>
+        <p>Aprende a tocar las escalas de Do, Sol y Fa mayores.</p>
+        <a href="/nivelbasicoA.html">
+            <button><i class="fas fa-play-circle"></i> Ver Video</button>
+        </a>
+    </div>
+    <div class="video-curso">
+        <h3><i class="fas fa-book-open"></i> Teoría Musical Elemental</h3>
+        <p>Conoce los conceptos teóricos fundamentales de la música.</p>
+        <a href="/Teoria_Elemntal.html">
+            <button><i class="fas fa-play-circle"></i> Ver Video</button>
+        </a>
+    </div>
+    <div class="video-curso">
+        <h3><i class="fas fa-hand-point-up"></i> Técnica de Digitación</h3>
+        <p>Desarrolla la coordinación y destreza de tus dedos.</p>
+        <p class="soon"><i class="fas fa-clock"></i> ¡Muy Pronto!</p>
+    </div>
+</main>
+</body>
+</html>

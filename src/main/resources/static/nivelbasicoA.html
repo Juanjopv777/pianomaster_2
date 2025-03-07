@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Maestro - Nivel Básico</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #1a2530;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, #34495e 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: var(--gradient);
+            padding: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.05)" d="M0,96L48,106.7C96,117,192,139,288,154.7C384,171,480,181,576,176C672,171,768,149,864,144C960,139,1056,149,1152,154.7C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center bottom;
+            opacity: 0.8;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--light);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .piano-keys {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+            height: 40px;
+        }
+
+        .key {
+            height: 100%;
+            position: relative;
+        }
+
+        .white-key {
+            width: 20px;
+            background: white;
+            border: 1px solid rgba(0,0,0,0.2);
+            border-radius: 0 0 3px 3px;
+            z-index: 1;
+        }
+
+        .black-key {
+            width: 13px;
+            background: #333;
+            margin: 0 -6.5px;
+            height: 60%;
+            z-index: 2;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .course-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background: var(--gradient);
+            color: white;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-header::after {
+            content: "";
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-text {
+            color: #596575;
+            font-size: 0.95rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .coming-soon {
+            color: var(--accent);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .coming-soon i {
+            font-size: 1.2rem;
+        }
+
+        /* Piano key animation */
+        @keyframes pianoPlay {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+            100% { transform: translateY(0); }
+        }
+
+        .white-key:nth-child(1) { animation: pianoPlay 2s ease-in-out 0s infinite; }
+        .white-key:nth-child(3) { animation: pianoPlay 2.3s ease-in-out 0.2s infinite; }
+        .white-key:nth-child(5) { animation: pianoPlay 1.9s ease-in-out 0.4s infinite; }
+        .white-key:nth-child(7) { animation: pianoPlay 2.1s ease-in-out 0.1s infinite; }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content container">
+        <h1>Piano Maestro: Nivel Básico</h1>
+        <p class="subtitle">Domina los fundamentos del piano con nuestros cursos estructurados</p>
+        <div class="piano-keys">
+            <div class="key white-key"></div>
+            <div class="key black-key"></div>
+            <div class="key white-key"></div>
+            <div class="key black-key"></div>
+            <div class="key white-key"></div>
+            <div class="key white-key"></div>
+            <div class="key black-key"></div>
+            <div class="key white-key"></div>
+            <div class="key black-key"></div>
+            <div class="key white-key"></div>
+            <div class="key black-key"></div>
+            <div class="key white-key"></div>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <div class="courses-grid">
+        <div class="course-card">
+            <div class="card-header">
+                <div class="card-icon"><i class="fas fa-music"></i></div>
+                <h3 class="card-title">Acordes Mayores</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Aprende la postura correcta, ubicación de notas y técnicas básicas para comenzar a tocar el piano de manera profesional.</p>
+                <a href="/videos_A_mayores.html" class="btn btn-primary">Ver curso <i class="fas fa-play-circle"></i></a>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="card-header">
+                <div class="card-icon"><i class="fas fa-guitar"></i></div>
+                <h3 class="card-title">Acordes Menores</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Domina los acordes y escalas más sencillos para acompañar melodías y crear ambientes musicales cautivadores.</p>
+                <a href="/videos_A_menores.html" class="btn btn-primary">Ver curso <i class="fas fa-play-circle"></i></a>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="card-header">
+                <div class="card-icon"><i class="fas fa-sliders-h"></i></div>
+                <h3 class="card-title">Acordes Bemoles</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Aprende a tocar las escalas de Do, Sol y Fa mayores. Domina la técnica de los bemoles para expandir tu repertorio.</p>
+                <a href="../Piano Maestro/videos/vidoesbasicos/videobasico.html" class="coming-soon">
+                    <i class="fas fa-clock"></i> ¡Muy Pronto!
+                </a>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="card-header">
+                <div class="card-icon"><i class="fas fa-sharp"></i></div>
+                <h3 class="card-title">Acordes Sostenidos</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Conoce los conceptos teóricos fundamentales de la música y cómo aplicarlos en la práctica con los sostenidos.</p>
+                <div class="coming-soon">
+                    <i class="fas fa-clock"></i> ¡Muy Pronto!
+                </div>
+            </div>
+        </div>
+
+        <div class="course-card">
+            <div class="card-header">
+                <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+                <h3 class="card-title">Acordes con 7</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Aprende a leer notas en el pentagrama y a interpretar partituras sencillas incorporando la séptima en tus acordes.</p>
+                <div class="coming-soon">
+                    <i class="fas fa-clock"></i> ¡Muy Pronto!
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

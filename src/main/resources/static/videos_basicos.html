@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel Básico - Academia de Piano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Variables globales */
+        :root {
+          --primary-color: #3a2a82;
+          --secondary-color: #8075a4;
+          --accent-color: #f8b500;
+          --background-color: #f5f5f7;
+          --text-color: #333333;
+          --white: #ffffff;
+          --black: #121212;
+          --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          --border-radius: 8px;
+          --transition: all 0.3s ease;
+        }
+
+        /* Estilos generales */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Montserrat', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+          background-color: var(--background-color);
+          color: var(--text-color);
+          line-height: 1.6;
+        }
+
+        .container {
+          width: 90%;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px 0;
+        }
+
+        /* Encabezado */
+        header {
+          background: linear-gradient(135deg, var(--primary-color), #1e1147);
+          color: var(--white);
+          padding: 60px 0;
+          position: relative;
+          overflow: hidden;
+        }
+
+        header::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 40px;
+          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%23f5f5f7" opacity="0.3"></path></svg>') center bottom no-repeat;
+          background-size: 100% 100%;
+        }
+
+        .header-content {
+          text-align: center;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .piano-icon {
+          margin-bottom: 20px;
+          animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+
+        h1 {
+          font-size: 3rem;
+          margin-bottom: 20px;
+          font-weight: 700;
+          letter-spacing: 1px;
+        }
+
+        .subtitle {
+          font-size: 1.2rem;
+          opacity: 0.9;
+          max-width: 700px;
+          margin: 0 auto;
+        }
+
+        /* Piano decorativo */
+        .piano-header {
+          display: flex;
+          justify-content: center;
+          height: 80px;
+          margin: 40px 0;
+          perspective: 800px;
+          transform: rotateX(10deg);
+          box-shadow: var(--shadow);
+          border-radius: var(--border-radius);
+          overflow: hidden;
+        }
+
+        .piano-key {
+          flex: 1;
+          height: 100%;
+          transition: var(--transition);
+        }
+
+        .white-key {
+          background-color: var(--white);
+          border-right: 1px solid #ddd;
+          position: relative;
+          z-index: 1;
+        }
+
+        .black-key {
+          background-color: var(--black);
+          margin: 0 -10px;
+          height: 60%;
+          position: relative;
+          z-index: 2;
+          box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .piano-key:hover {
+          transform: translateY(5px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Secciones de video */
+        .video-section {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 30px;
+          margin-bottom: 50px;
+          background-color: var(--white);
+          border-radius: var(--border-radius);
+          overflow: hidden;
+          box-shadow: var(--shadow);
+          transition: var(--transition);
+        }
+
+        .video-section:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-wrapper {
+          position: relative;
+          padding-bottom: 56.25%; /* 16:9 ratio */
+          height: 0;
+          overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+
+        .video-info {
+          padding: 25px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .video-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+          margin-bottom: 15px;
+          color: var(--primary-color);
+          border-left: 4px solid var(--accent-color);
+          padding-left: 15px;
+        }
+
+        .video-description {
+          color: var(--text-color);
+          margin-bottom: 20px;
+          line-height: 1.6;
+        }
+
+        .video-rating {
+          display: flex;
+          gap: 10px;
+          margin-top: auto;
+        }
+
+        .rating-emoji {
+          font-size: 1.8rem;
+          cursor: pointer;
+          transition: var(--transition);
+          opacity: 0.5;
+        }
+
+        .rating-emoji:hover, .rating-emoji.active {
+          transform: scale(1.2);
+          opacity: 1;
+        }
+
+        /* Botones */
+        .course-grid {
+          display: flex;
+          justify-content: center;
+          margin: 50px 0;
+        }
+
+        .boton-flecha {
+          display: inline-block;
+          padding: 12px 30px;
+          background-color: var(--primary-color);
+          color: var(--white);
+          text-decoration: none;
+          border-radius: 50px;
+          font-weight: 600;
+          transition: var(--transition);
+          box-shadow: var(--shadow);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .boton-flecha::before {
+          content: "←";
+          margin-right: 10px;
+          transition: var(--transition);
+        }
+
+        .boton-flecha:hover {
+          background-color: var(--accent-color);
+          color: var(--black);
+          transform: translateY(-3px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .boton-flecha:hover::before {
+          transform: translateX(-5px);
+        }
+
+        /* Modal de video */
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.8);
+          overflow: auto;
+        }
+
+        .modal-content {
+          background-color: var(--white);
+          margin: 5% auto;
+          padding: 20px;
+          width: 80%;
+          max-width: 900px;
+          border-radius: var(--border-radius);
+          position: relative;
+        }
+
+        .close-modal {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 30px;
+          font-weight: bold;
+          cursor: pointer;
+          color: var(--text-color);
+        }
+
+        /* Footer */
+        .footer {
+          background-color: #1a1a2e;
+          color: var(--white);
+          padding: 60px 0 20px;
+          margin-top: 60px;
+          position: relative;
+        }
+
+        .footer::before {
+          content: "";
+          position: absolute;
+          top: -40px;
+          left: 0;
+          width: 100%;
+          height: 40px;
+          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" fill="%231a1a2e"></path></svg>') center top no-repeat;
+          background-size: 100% 100%;
+        }
+
+        .footer-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 40px;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 20px;
+        }
+
+        .footer-column h4 {
+          color: var(--accent-color);
+          margin-bottom: 20px;
+          font-size: 1.2rem;
+          position: relative;
+          padding-bottom: 10px;
+        }
+
+        .footer-column h4::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 50px;
+          height: 2px;
+          background-color: var(--accent-color);
+        }
+
+        .footer-links {
+          list-style: none;
+        }
+
+        .footer-links li {
+          margin-bottom: 10px;
+        }
+
+        .footer-links a, .footer-social a {
+          color: #bbb;
+          text-decoration: none;
+          transition: var(--transition);
+        }
+
+        .footer-links a:hover, .footer-social a:hover {
+          color: var(--accent-color);
+          padding-left: 5px;
+        }
+
+        .footer-logo-box {
+          margin-bottom: 20px;
+          max-width: 150px;
+        }
+
+        .footer-logo-box img {
+          width: 100%;
+          height: auto;
+        }
+
+        .footer-info {
+          color: #aaa;
+          font-size: 0.9rem;
+          margin-bottom: 20px;
+        }
+
+        .footer-social {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 15px;
+          margin-top: 15px;
+        }
+
+        .footer-social a {
+          display: inline-block;
+          margin-right: 15px;
+        }
+
+        .footer-bottom {
+          text-align: center;
+          padding-top: 30px;
+          margin-top: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          font-size: 0.9rem;
+          color: #888;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          h1 {
+            font-size: 2.2rem;
+          }
+
+          .video-section {
+            grid-template-columns: 1fr;
+          }
+
+          .video-wrapper iframe {
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+          }
+
+          .footer-container {
+            grid-template-columns: 1fr;
+            text-align: center;
+          }
+
+          .footer-column h4::after {
+            left: 50%;
+            transform: translateX(-50%);
+          }
+
+          .footer-social {
+            justify-content: center;
+          }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .video-section, .piano-header, .boton-flecha {
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .video-section:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+
+        .video-section:nth-child(3) {
+          animation-delay: 0.4s;
+        }
+
+        /* Script para la funcionalidad de las estrellas */
+        .js-code {
+          display: none;
+        }
+
+        /* Añadiendo interactividad para los emojis de calificación */
+        .rating-emoji:hover ~ .rating-emoji {
+          opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <svg class="piano-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 7V17C21 17.5304 20.7893 18.0391 20.4142 18.4142C20.0391 18.7893 19.5304 19 19 19H5C4.46957 19 3.96086 18.7893 3.58579 18.4142C3.21071 18.0391 3 17.5304 3 17V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 7H21V17C21 17.5304 20.7893 18.0391 20.4142 18.4142C20.0391 18.7893 19.5304 19 19 19H5C4.46957 19 3.96086 18.7893 3.58579 18.4142C3.21071 18.0391 3 17.5304 3 17V7Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 19V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 19V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M18 13.5V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 13.5V7" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h1>Nivel Básico</h1>
+            <p class="subtitle">Domina los fundamentos del piano con nuestro curso introductorio diseñado para principiantes. Aprende desde las bases hasta crear tus primeras melodías.</p>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+
+    <div class="piano-header">
+        <div class="piano-key white-key"></div>
+        <div class="piano-key black-key"></div>
+        <div class="piano-key white-key"></div>
+        <div class="piano-key black-key"></div>
+        <div class="piano-key white-key"></div>
+        <div class="piano-key white-key"></div>
+        <div class="piano-key black-key"></div>
+        <div class="piano-key white-key"></div>
+        <div class="piano-key black-key"></div>
+        <div class="piano-key white-key"></div>
+        <div class="piano-key black-key"></div>
+        <div class="piano-key white-key"></div>
+    </div>
+
+    <!-- Video Section 1 -->
+    <div class="video-section">
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/yJ4AT2UEdhw?si=AZ7hYf5KX_7j78cH"
+                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+            <div class="video-title">1) Notas Musicales Básicas</div>
+            <div class="video-description">Aprende a identificar las notas en el teclado y sus correspondencias en el pentagrama</div>
+            <div class="video-rating" data-video-id="yJ4AT2UEdhw">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Section 2 -->
+    <div class="video-section">
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/zL95ERUWjQI?si=cBhcXBiEjCtUBdTk"
+                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+            <div class="video-title">2) Técnica de Dedos</div>
+            <div class="video-description">Desarrollo de la independencia de dedos con ejercicios progresivos para mejorar tu ejecución</div>
+            <div class="video-rating" data-video-id="P2rRNQX8-M8">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Section 3 -->
+    <div class="video-section">
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/rt2ICXgb6AQ?si=BNhOqqJPCqW-UydV"
+                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+            <div class="video-title">3) Acordes Fundamentales</div>
+            <div class="video-description">Descubre los acordes mayores, menores y sus inversiones para aplicarlos en tus primeras canciones</div>
+            <div class="video-rating" data-video-id="O6NRLYUThrY">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div class="course-grid">
+        <a href="/cursos.html" class="boton-flecha">volver a Cursos</a>
+    </div>
+</main>
+
+<div id="videoModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <iframe id="videoIframe" width="800" height="450" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <!-- Logo e información -->
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="img/Logo_principal.png" alt="Piano Shop Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+
+        <!-- Sección de enlaces populares -->
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 Piano Maestro. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script>
+    // Funcionalidad para el sistema de calificación
+    document.addEventListener('DOMContentLoaded', function() {
+        // Sistema de calificación con emojis
+        const ratingContainers = document.querySelectorAll('.video-rating');
+
+        ratingContainers.forEach(container => {
+            const emojis = container.querySelectorAll('.rating-emoji');
+
+            emojis.forEach(emoji => {
+                emoji.addEventListener('click', function() {
+                    // Quitar todas las clases activas
+                    emojis.forEach(e => e.classList.remove('active'));
+
+                    // Marcar como activos los emojis hasta el seleccionado
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    const videoId = container.getAttribute('data-video-id');
+
+                    // Marcar el seleccionado
+                    this.classList.add('active');
+
+                    // Guardar calificación en localStorage
+                    localStorage.setItem(`video-rating-${videoId}`, rating);
+
+                    // Efecto de confirmación
+                    this.classList.add('pulse');
+                    setTimeout(() => {
+                        this.classList.remove('pulse');
+                    }, 300);
+                });
+            });
+
+            // Cargar calificaciones guardadas
+            const videoId = container.getAttribute('data-video-id');
+            const savedRating = localStorage.getItem(`video-rating-${videoId}`);
+
+            if (savedRating) {
+                const selectedEmoji = container.querySelector(`.rating-emoji[data-rating="${savedRating}"]`);
+                if (selectedEmoji) {
+                    selectedEmoji.classList.add('active');
+                }
+            }
+        });
+
+        // Animación del piano
+        const pianoKeys = document.querySelectorAll('.piano-key');
+
+        pianoKeys.forEach((key, index) => {
+            key.addEventListener('mouseenter', function() {
+                setTimeout(() => {
+                    this.style.transform = 'translateY(5px)';
+                }, index * 50);
+            });
+
+            key.addEventListener('mouseleave', function() {
+                setTimeout(() => {
+                    this.style.transform = 'translateY(0)';
+                }, index * 50);
+            });
+        });
+
+        // Funcionalidad para el modal de video
+        const videoModal = document.getElementById('videoModal');
+        const videoIframe = document.getElementById('videoIframe');
+        const closeModal = document.querySelector('.close-modal');
+
+        // Abrir modal al hacer clic en un video
+        document.querySelectorAll('.video-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', function() {
+                const iframe = this.querySelector('iframe');
+                const videoSrc = iframe.getAttribute('src');
+
+                videoIframe.setAttribute('src', videoSrc);
+                videoModal.style.display = 'block';
+                document.body.style.overflow = 'hidden'; // Prevenir scroll
+            });
+        });
+
+        // Cerrar modal
+        if (closeModal) {
+            closeModal.addEventListener('click', function() {
+                videoModal.style.display = 'none';
+                videoIframe.setAttribute('src', '');
+                document.body.style.overflow = 'auto'; // Restaurar scroll
+            });
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        window.addEventListener('click', function(event) {
+            if (event.target === videoModal) {
+                videoModal.style.display = 'none';
+                videoIframe.setAttribute('src', '');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Animación del título de la página
+        const headerTitle = document.querySelector('h1');
+        if (headerTitle) {
+            const text = headerTitle.textContent;
+            headerTitle.innerHTML = '';
+
+            for (let i = 0; i < text.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = text[i];
+                span.style.animationDelay = `${i * 0.1}s`;
+                span.classList.add('letter-animation');
+                headerTitle.appendChild(span);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

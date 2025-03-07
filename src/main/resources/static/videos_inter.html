@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel Medio - Interpretación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --background: #f0f9ff;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --progress-bg: #e2e8f0;
+            --progress-fill: #6366f1;
+            --accent: #3b82f6;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background);
+            padding: 2rem;
+            color: var(--text);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            transform: scale(1.1);
+            background-color: var(--accent);
+        }
+
+        /* Estilos para grid de videos */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.05);
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background-color: rgba(99, 102, 241, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-icon:hover {
+            background-color: rgba(99, 102, 241, 1);
+            width: 75px;
+            height: 75px;
+        }
+
+        .play-icon:before {
+            content: "";
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
+        }
+
+        .cg-logo {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-info {
+            padding: 0.5rem 0;
+        }
+
+        .video-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .video-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Estilos para valoración de videos con emojis */
+        .video-rating {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rating-emoji {
+            font-size: 1.5rem;
+            margin: 0 0.3rem;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            opacity: 0.5;
+        }
+
+        .rating-emoji:hover, .rating-emoji.selected {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        /* Estilos para el modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 85%;
+            max-width: 900px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            z-index: 1010;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal:hover {
+            transform: scale(1.1);
+            background-color: rgba(255, 0, 0, 0.7);
+        }
+
+        .video-iframe {
+            width: 100%;
+            height: 500px;
+        }
+
+        /* Estilos para el footer */
+        .footer {
+            background-color: #001a33;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            padding: 40px 0;
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 2rem;
+        }
+
+        .footer-logo-box {
+            background: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .footer-column h4 {
+            color: #1abc9c;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #1abc9c;
+        }
+
+        .footer-social {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-social a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .footer-social a:hover {
+            color: #1abc9c;
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Responsive design */
+        @media (max-width: 992px) {
+            .video-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .video-iframe {
+                height: 450px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+
+            .video-iframe {
+                height: 350px;
+            }
+
+            .home-button {
+                width: 45px;
+                height: 45px;
+            }
+
+            .footer-container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-iframe {
+                height: 250px;
+            }
+
+            .video-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="/cursos.html" class="home-button">
+    <i class="fas fa-home"></i>
+</a>
+
+<header>
+    <h1>Nievl Medio - Interpretación</h1>
+</header>
+
+<div class="video-grid">
+    <div class="video-card">
+        <div class="video-thumbnail">
+            <img src="https://img.youtube.com/vi/xkCS6NSZZUw/hqdefault.jpg" alt="El señor indiferente - Pasado simple">
+            <div class="play-icon" data-video-id="xkCS6NSZZUw"></div>
+            <div class="cg-logo">CG HD</div>
+        </div>
+        <div class="video-info">
+            <div class="video-title">1)</div>
+            <div class="video-description">Aprende este ejercicio que te ayudara a mejorar nu vel de  interpretación </div>
+            <div class="video-rating" data-video-id="xkCS6NSZZUw">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-card">
+        <div class="video-thumbnail">
+            <img src="https://img.youtube.com/vi/DjR7_8aEBQk/hqdefault.jpg" alt="La pantera rosa - Presente simple">
+            <div class="play-icon" data-video-id="DjR7_8aEBQk"></div>
+            <div class="cg-logo">CG HD</div>
+        </div>
+        <div class="video-info">
+            <div class="video-title">La pantera rosa - En el rosa de la noche - Presente simple</div>
+            <div class="video-description">Mira un episodio de La Pantera Rosa y practica el presente simple. Tercera persona del singular.</div>
+            <div class="video-rating" data-video-id="DjR7_8aEBQk">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-card">
+        <div class="video-thumbnail">
+            <img src="https://img.youtube.com/vi/nH0vcMCO5LM/hqdefault.jpg" alt="Rutinas diarias de Gru - Presente simple">
+            <div class="play-icon" data-video-id="nH0vcMCO5LM"></div>
+            <div class="cg-logo">CG HD</div>
+        </div>
+        <div class="video-info">
+            <div class="video-title">Rutinas diarias de Gru: Presente simple</div>
+            <div class="video-description">Actividad de calentamiento para el trabajo en grupo para practicar oraciones afirmativas, negativas e interrogativas en Presente Simple. 3ª persona.</div>
+            <div class="video-rating" data-video-id="nH0vcMCO5LM">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-card">
+        <div class="video-thumbnail">
+            <img src="https://img.youtube.com/vi/4fB1j6dMXsk/hqdefault.jpg" alt="Angry Birds - Amistad con un gusano">
+            <div class="play-icon" data-video-id="4fB1j6dMXsk"></div>
+            <div class="cg-logo">CG HD</div>
+        </div>
+        <div class="video-info">
+            <div class="video-title">Angry Birds - Amistad con un gusano</div>
+            <div class="video-description">Repasa el conteo. Aprende la diferencia entre "there is" y "there are". Por ejemplo: There is one bird. There are two birds.</div>
+            <div class="video-rating" data-video-id="4fB1j6dMXsk">
+                <div class="rating-emoji" data-rating="5">😃</div>
+                <div class="rating-emoji" data-rating="4">🙂</div>
+                <div class="rating-emoji" data-rating="3">😐</div>
+                <div class="rating-emoji" data-rating="2">🙁</div>
+                <div class="rating-emoji" data-rating="1">😞</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="videoModal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <iframe class="video-iframe" id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="img/Logo_principal.png" alt="Piano Shop Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+
+        <!-- Sección de enlaces populares -->
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster561@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 Piano Master. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // Seleccionar todos los botones de reproducción
+    const playButtons = document.querySelectorAll('.play-icon');
+    const modal = document.getElementById('videoModal');
+    const videoIframe = document.getElementById('videoIframe');
+    const closeModal = document.querySelector('.close-modal');
+
+    // Agregar evento de clic a cada botón de reproducción
+    playButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const videoId = this.getAttribute('data-video-id');
+            videoIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+            modal.style.display = 'flex';
+        });
+    });
+
+    // Cerrar el modal al hacer clic en el botón de cierre
+    closeModal.addEventListener('click', function() {
+        videoIframe.src = '';
+        modal.style.display = 'none';
+    });
+
+    // Cerrar el modal al hacer clic fuera del contenido
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            videoIframe.src = '';
+            modal.style.display = 'none';
+        }
+    });
+
+    // Cerrar el modal con la tecla ESC
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape" && modal.style.display === 'flex') {
+            videoIframe.src = '';
+            modal.style.display = 'none';
+        }
+    });
+
+    // Sistema de valoración con emojis
+    const ratingEmojis = document.querySelectorAll('.rating-emoji');
+
+    ratingEmojis.forEach(emoji => {
+        emoji.addEventListener('click', function() {
+            // Obtener el contenedor padre
+            const ratingContainer = this.parentElement;
+
+            // Remover la clase 'selected' de todos los emojis en este contenedor
+            ratingContainer.querySelectorAll('.rating-emoji').forEach(e => {
+                e.classList.remove('selected');
+            });
+
+            // Agregar la clase 'selected' al emoji seleccionado
+            this.classList.add('selected');
+
+            // Obtener el valor de la valoración y el ID del video
+            const rating = this.getAttribute('data-rating');
+            const videoId = ratingContainer.getAttribute('data-video-id');
+
+            // Aquí podrías enviar la valoración a un servidor
+            console.log(`Video ${videoId} valorado con: ${rating}`);
+
+            // Mostrar un mensaje de agradecimiento (opcional)
+            alert('¡Gracias por tu valoración!');
+        });
+    });
+</script>
+</body>
+</html>

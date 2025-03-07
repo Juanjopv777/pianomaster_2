@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel Avanzado - Desafíos de Piano</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Variables de colores */
+        :root {
+            --color-primary: #1a237e;
+            --color-secondary: #311b92;
+            --color-accent: #4527a0;
+            --color-light: #e8eaf6;
+            --color-dark: #121212;
+            --gradient-bg: linear-gradient(135deg, #0d47a1, #4a148c);
+            --gradient-card: linear-gradient(145deg, #f5f5f5, #e0e0e0);
+            --gradient-card-hover: linear-gradient(145deg, #e3f2fd, #d1c4e9);
+            --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --shadow-strong: 0 15px 30px rgba(26, 35, 126, 0.25);
+            --border-radius: 12px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Estilos generales */
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: var(--gradient-bg);
+            margin: 0;
+            padding: 0;
+            color: var(--color-light);
+            line-height: 1.6;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        /* Encabezado */
+        header {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .piano-keys {
+            height: 60px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            max-width: 500px;
+        }
+
+        .key {
+            height: 100%;
+            background: #fff;
+            border: 1px solid #121212;
+            border-radius: 0 0 5px 5px;
+            position: relative;
+            transition: var(--transition-smooth);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .key.white {
+            width: 40px;
+            z-index: 1;
+        }
+
+        .key.black {
+            width: 28px;
+            background: #121212;
+            margin: 0 -14px;
+            z-index: 2;
+            height: 65%;
+        }
+
+        .key:hover {
+            background: #e3f2fd;
+            transform: translateY(2px);
+        }
+
+        .key.black:hover {
+            background: #424242;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            padding: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 3px;
+            background: #fff;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* Contenedor de videos */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* Elementos de video */
+        .video-item {
+            background: var(--gradient-card);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--color-dark);
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-strong);
+            background: var(--gradient-card-hover);
+        }
+
+        .video-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--color-accent);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+        }
+
+        .video-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        /* Títulos con iconos */
+        .video-item h2 {
+            color: var(--color-primary);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .video-item h2::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 2px;
+            background: var(--color-accent);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+
+        .video-item:hover h2::after {
+            width: 80px;
+        }
+
+        .video-item h2 i {
+            color: var(--color-accent);
+        }
+
+        /* Nivel de dificultad */
+        .difficulty {
+            display: flex;
+            margin-bottom: 15px;
+            color: var(--color-accent);
+        }
+
+        /* Videos */
+        /* Actualización para los contenedores de video */
+.video-wrapper {
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+        video {
+            width: 100%;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+            display: block;
+        }
+
+        .video-item:hover video {
+            transform: scale(1.02);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .video-item:nth-child(1) { animation: fadeIn 0.6s ease-out forwards; }
+        .video-item:nth-child(2) { animation: fadeIn 0.6s 0.2s ease-out forwards; opacity: 0; }
+        .video-item:nth-child(3) { animation: fadeIn 0.6s 0.4s ease-out forwards; opacity: 0; }
+        .video-item:nth-child(4) { animation: fadeIn 0.6s 0.6s ease-out forwards; opacity: 0; }
+
+        /* Footer completo */
+        .footer {
+            background-color: #001a33;
+            color: #ffffff;
+            font-family: 'Raleway', sans-serif;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .footer-logo-box {
+            background: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .footer-column h4 {
+            color: #1abc9c;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 2px;
+            background: #1abc9c;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: inline-block;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #1abc9c;
+            transition: width 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #1abc9c;
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-social {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-social a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .footer-social a:hover {
+            color: #1abc9c;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .video-container {
+                grid-template-columns: 1fr;
+            }
+
+            .piano-keys {
+                height: 40px;
+            }
+
+            .key.white {
+                width: 30px;
+            }
+
+            .key.black {
+                width: 20px;
+                margin: 0 -10px;
+            }
+
+            .footer-column {
+                text-align: center;
+            }
+
+            .footer-column h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main-content">
+    <header>
+        <div class="piano-keys">
+            <div class="key white"></div>
+            <div class="key black"></div>
+            <div class="key white"></div>
+            <div class="key black"></div>
+            <div class="key white"></div>
+            <div class="key white"></div>
+            <div class="key black"></div>
+            <div class="key white"></div>
+            <div class="key black"></div>
+            <div class="key white"></div>
+            <div class="key black"></div>
+            <div class="key white"></div>
+        </div>
+        <h1>Nivel Avanzado - Desafíos</h1>
+    </header>
+    <main class="video-container">
+        <div class="video-item">
+            <h2><i class="fas fa-music"></i> Desafío 1</h2>
+            <div class="difficulty">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/2aBtDz87UK0?si=TjlGp1rpHJfVfwNA"
+                        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="video-item">
+            <h2><i class="fas fa-guitar"></i> Desafío 2</h2>
+            <div class="difficulty">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/vFUr0MhxDcc?si=rjR5QCnfbuAMEjDS"
+                        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="video-item">
+            <h2><i class="fas fa-book-open"></i> Desafío 3</h2>
+            <div class="difficulty">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/GbUV3TXUzeQ?si=s4oNLHrKXMEF7g17"
+                        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="video-item">
+            <h2><i class="fas fa-headphones"></i> Desafío 4</h2>
+            <div class="difficulty">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <div class="video-wrapper">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/1jhh-20r4rA?si=W-7VSADBfa7oGAdW"
+                        title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <!-- Logo e información -->
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="img/Logo_principal.png" alt="Piano Shop Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+
+        <!-- Sección de enlaces populares -->
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 Piano Maestro. Todos los derechos reservados.</p>
+    </div>
+</footer>
+</body>
+</html>

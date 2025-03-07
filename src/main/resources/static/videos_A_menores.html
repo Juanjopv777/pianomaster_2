@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acordes Menores - Teoría Musical</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos globales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Encabezado */
+        .header {
+            background: linear-gradient(135deg, #333 0%, #000 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header i {
+            color: #ffcc00;
+            margin-right: 0.5rem;
+        }
+
+        /* Secciones de vídeo */
+        .video-section {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin: 0 auto 2rem;
+            max-width: 90%;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 768px) {
+            .video-section {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .video-wrapper {
+            width: 100%;
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .video-wrapper {
+                width: 60%;
+                padding-bottom: 33.75%; /* 16:9 Aspect Ratio for 60% width */
+            }
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Barra de progreso del video */
+        .video-progress-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .video-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffcc00, #ff9900);
+            transition: width 0.1s linear;
+        }
+
+        .video-progress-time {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            z-index: 10;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .video-info {
+                width: 40%;
+            }
+        }
+
+        .video-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.7rem;
+            color: #222;
+            border-bottom: 2px solid #ffcc00;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .video-description {
+            color: #555;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Sistema de calificación con emojis */
+        .video-rating {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .rating-emoji {
+            cursor: pointer;
+            font-size: 1.5rem;
+            margin-right: 0.7rem;
+            opacity: 0.5;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .rating-emoji:hover {
+            transform: scale(1.2);
+            opacity: 1;
+        }
+
+        .rating-emoji.selected {
+            opacity: 1;
+        }
+
+        /* Botones */
+        .boton-flecha {
+            display: inline-block;
+            background-color: #333;
+            color: white;
+            padding: 0.7rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            margin: 1rem 0;
+            transition: background-color 0.3s ease;
+            position: relative;
+        }
+
+        .boton-flecha:hover {
+            background-color: #222;
+        }
+
+        .boton-flecha::after {
+            content: "←";
+            margin-left: 0.5rem;
+        }
+
+        /* Cuadrícula de cursos */
+        .course-grid {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Modal de vídeo */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: -30px;
+            top: -30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Elementos de piano decorativos */
+        .piano-keys {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .white-key {
+            width: 40px;
+            height: 120px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            position: relative;
+        }
+
+        .black-key {
+            width: 30px;
+            height: 80px;
+            background-color: #222;
+            position: absolute;
+            z-index: 2;
+        }
+
+        /* Animaciones */
+        @keyframes noteFloat {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100px) rotate(10deg); opacity: 0; }
+        }
+
+        /* Funcionalidad JavaScript para las calificaciones */
+        .js-enabled .rating-emoji:hover {
+            cursor: pointer;
+        }
+
+        /* Controles de video personalizados */
+        .video-controls {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 11;
+        }
+
+        .video-wrapper:hover .video-controls {
+            opacity: 1;
+        }
+
+        .video-play-pause {
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        /* Estilos de accesibilidad */
+        @media (prefers-reduced-motion: reduce) {
+            .video-section {
+                transition: none;
+            }
+
+            .rating-emoji {
+                transition: none;
+            }
+        }
+
+        /* Modo oscuro */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #f1f1f1;
+            }
+
+            .video-section {
+                background-color: #1e1e1e;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .video-title {
+                color: #fff;
+            }
+
+            .video-description {
+                color: #bbb;
+            }
+        }
+
+        .footer {
+    background-color: #333;
+    color: #fff;
+    padding: 40px 0 20px;
+    margin-top: 40px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.footer-column {
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 30px;
+}
+
+.footer-logo-box {
+    margin-bottom: 15px;
+}
+
+.footer-logo-box img {
+    max-width: 150px;
+    height: auto;
+}
+
+.footer-info {
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.footer-column h4 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-column h4:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background-color: #ffcc00;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #ffcc00;
+}
+
+.footer-column p {
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.footer-social a {
+    color: #ccc;
+    text-decoration: none;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+    color: #ffcc00;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+.footer-bottom p {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-column {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .footer-column h4:after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .footer-social {
+        justify-content: center;
+    }
+
+    .modules-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .course-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .course-progress {
+        margin-top: 10px;
+    }
+}
+    </style>
+</head>
+<body>
+<header class="header">
+    <h1><i class="fas fa-music"></i> Teoría Musical: Acordes Menores</h1>
+    <p>Fundamentos esenciales para compositores y músicos</p>
+</header>
+
+<div class="video-section">
+    <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/L-m3GJZGoIk?si=wWalgaKh6quOSspL"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+    <div class="video-info">
+        <div class="video-title">1) Notas Musicales Básicas</div>
+        <div class="video-description">Aprende a identificar las notas en el teclado y sus correspondencias en el pentagrama</div>
+        <div class="video-rating" data-video-id="yJ4AT2UEdhw">
+            <div class="rating-emoji" data-rating="5">😃</div>
+            <div class="rating-emoji" data-rating="4">🙂</div>
+            <div class="rating-emoji" data-rating="3">😐</div>
+            <div class="rating-emoji" data-rating="2">🙁</div>
+            <div class="rating-emoji" data-rating="1">😞</div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Section 2 -->
+<div class="video-section">
+    <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/7H8MqGDtyZo?si=UjQUFGaoh-b6qDt_"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+    </div>
+    <div class="video-info">
+        <div class="video-title">2) Técnica de Dedos</div>
+        <div class="video-description">Desarrollo de la independencia de dedos con ejercicios progresivos para mejorar tu ejecución</div>
+        <div class="video-rating" data-video-id="P2rRNQX8-M8">
+            <div class="rating-emoji" data-rating="5">😃</div>
+            <div class="rating-emoji" data-rating="4">🙂</div>
+            <div class="rating-emoji" data-rating="3">😐</div>
+            <div class="rating-emoji" data-rating="2">🙁</div>
+            <div class="rating-emoji" data-rating="1">😞</div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Section 3 -->
+<div class="video-section">
+    <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/3aCHnbRjWCw?si=i6SZW68OK8X9RlNI"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+    </div>
+    <div class="video-info">
+        <div class="video-title">3) Acordes Fundamentales</div>
+        <div class="video-description">Descubre los acordes mayores, menores y sus inversiones para aplicarlos en tus primeras canciones</div>
+        <div class="video-rating" data-video-id="O6NRLYUThrY">
+            <div class="rating-emoji" data-rating="5">😃</div>
+            <div class="rating-emoji" data-rating="4">🙂</div>
+            <div class="rating-emoji" data-rating="3">😐</div>
+            <div class="rating-emoji" data-rating="2">🙁</div>
+            <div class="rating-emoji" data-rating="1">😞</div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="course-grid">
+    <a href="/cursos.html" class="boton-flecha">volver a Cursos</a>
+</div>
+</main>
+
+<div id="videoModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <iframe id="videoIframe" width="800" height="450" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+</div>
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="img/Logo_principal.png" alt="Piano Shop Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+
+        <!-- Sección de enlaces populares -->
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster561@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 Piano Master. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script>
+    // Función para inicializar la barra de progreso para todos los videos
+document.addEventListener('DOMContentLoaded', function() {
+    // Seleccionar todos los contenedores de video
+    const videoSections = document.querySelectorAll('.video-section');
+
+    videoSections.forEach(function(section) {
+        const videoWrapper = section.querySelector('.video-wrapper');
+        const iframe = videoWrapper.querySelector('iframe');
+
+        // Crear elementos para la barra de progreso
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'video-progress-container';
+
+        const progressBar = document.createElement('div');
+        progressBar.className = 'video-progress-bar';
+
+        const progressTime = document.createElement('div');
+        progressTime.className = 'video-progress-time';
+        progressTime.textContent = '0:00 / 0:00';
+
+        // Añadir elementos al DOM
+        progressContainer.appendChild(progressBar);
+        videoWrapper.appendChild(progressContainer);
+        videoWrapper.appendChild(progressTime);
+
+        // Configurar YouTube API para este iframe si es un video de YouTube
+        setupYouTubeAPI(iframe, progressBar, progressTime);
+    });
+});
+
+// Función para configurar la API de YouTube
+function setupYouTubeAPI(iframe, progressBar, progressTime) {
+    // Obtener el ID del video de YouTube desde el src del iframe
+    const src = iframe.src;
+    const videoId = getYouTubeVideoId(src);
+
+    if (!videoId) return;
+
+    // Si la API de YouTube aún no está cargada, cargarla
+    if (!window.YT) {
+        // Cargar la API de YouTube
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // Definir la función onYouTubeIframeAPIReady si aún no existe
+        window.onYouTubeIframeAPIReady = function() {
+            // Una vez que la API está lista, inicializar todos los videos
+            document.querySelectorAll('.video-wrapper iframe').forEach(function(iframe) {
+                const progressBar = iframe.parentNode.querySelector('.video-progress-bar');
+                const progressTime = iframe.parentNode.querySelector('.video-progress-time');
+                initYouTubePlayer(iframe, progressBar, progressTime);
+            });
+        };
+    } else {
+        // Si la API ya está cargada, inicializar este video
+        initYouTubePlayer(iframe, progressBar, progressTime);
+    }
+}
+
+// Función para inicializar el reproductor de YouTube
+function initYouTubePlayer(iframe, progressBar, progressTime) {
+    const videoId = getYouTubeVideoId(iframe.src);
+
+    // Reemplazar el iframe con un nuevo iframe que use la API
+    const playerId = 'youtube-player-' + Math.random().toString(36).substr(2, 9);
+    iframe.id = playerId;
+
+    // Asegurarse de que el src del iframe incluya enablejsapi=1
+    if (iframe.src.indexOf('enablejsapi=1') === -1) {
+        if (iframe.src.indexOf('?') === -1) {
+            iframe.src += '?enablejsapi=1';
+        } else {
+            iframe.src += '&enablejsapi=1';
+        }
+    }
+
+    // Crear el reproductor de YouTube
+    const player = new YT.Player(playerId, {
+        events: {
+            'onStateChange': function(event) {
+                if (event.data === YT.PlayerState.PLAYING) {
+                    // Actualizar la barra de progreso cada 500ms mientras se reproduce
+                    startProgressTracking(player, progressBar, progressTime);
+                } else {
+                    // Detener la actualización cuando el video se pausa o termina
+                    stopProgressTracking();
+                }
+            }
+        }
+    });
+}
+
+// Variable para almacenar el intervalo de actualización
+let progressInterval;
+
+// Función para iniciar el seguimiento del progreso
+function startProgressTracking(player, progressBar, progressTime) {
+    // Limpiar cualquier intervalo existente
+    stopProgressTracking();
+
+    // Crear un nuevo intervalo
+    progressInterval = setInterval(function() {
+        updateVideoProgress(player, progressBar, progressTime);
+    }, 500);
+}
+
+// Función para detener el seguimiento del progreso
+function stopProgressTracking() {
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+    }
+}
+
+// Función para actualizar el progreso del video
+function updateVideoProgress(player, progressBar, progressTime) {
+    // Obtener el tiempo actual y la duración
+    const currentTime = player.getCurrentTime();
+    const duration = player.getDuration();
+
+    // Calcular el porcentaje completado
+    const percent = (currentTime / duration) * 100;
+
+    // Actualizar la barra de progreso
+    progressBar.style.width = percent + '%';
+
+    // Actualizar el texto del tiempo
+    progressTime.textContent = formatTime(currentTime) + ' / ' + formatTime(duration);
+}
+
+// Función para formatear el tiempo en minutos:segundos
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+}
+
+// Función para extraer el ID de video de YouTube desde una URL
+function getYouTubeVideoId(url) {
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[7].length === 11) ? match[7] : null;
+}
+
+// Implementar controles de video personalizados
+document.addEventListener('DOMContentLoaded', function() {
+    const videoWrappers = document.querySelectorAll('.video-wrapper');
+
+    videoWrappers.forEach(function(wrapper) {
+        // Crear contenedor de controles
+        const controls = document.createElement('div');
+        controls.className = 'video-controls';
+
+        // Crear botón de reproducción/pausa
+        const playPauseButton = document.createElement('button');
+        playPauseButton.className = 'video-play-pause';
+        playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+
+        // Añadir controles al DOM
+        controls.appendChild(playPauseButton);
+        wrapper.appendChild(controls);
+
+        // Manejar eventos de clic en la barra de progreso
+        const progressContainer = wrapper.querySelector('.video-progress-container');
+        if (progressContainer) {
+            progressContainer.addEventListener('click', function(e) {
+                const iframe = wrapper.querySelector('iframe');
+                const player = YT.get(iframe.id);
+
+                if (player) {
+                    const rect = progressContainer.getBoundingClientRect();
+                    const clickPosition = (e.clientX - rect.left) / rect.width;
+                    const duration = player.getDuration();
+                    player.seekTo(clickPosition * duration);
+                }
+            });
+        }
+
+        // Manejar eventos de clic en el botón de reproducción/pausa
+        playPauseButton.addEventListener('click', function() {
+            const iframe = wrapper.querySelector('iframe');
+            const player = YT.get(iframe.id);
+
+            if (player) {
+                const state = player.getPlayerState();
+                if (state === YT.PlayerState.PLAYING) {
+                    player.pauseVideo();
+                    playPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                } else {
+                    player.playVideo();
+                    playPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                }
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

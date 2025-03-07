@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Master - Academia de Piano</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #1c1c1c;
+            --secondary-color: #f4f4f4;
+            --accent-color: #3498db;
+            --piano-black: #001a33;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
+            color: var(--primary-color);
+            line-height: 1.6;
+        }
+
+        .welcome-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .hero-content {
+            flex: 1;
+            text-align: left;
+            padding-right: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-image {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .music-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .music-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 60px;
+            text-decoration: none;
+            color: #000;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(to right, #b3d9ff, #b3b3ff);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .music-button i {
+            margin-right: 10px;
+            color: #000;
+        }
+
+        .music-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+        }
+
+        .musical-note {
+            position: relative;
+        }
+
+        .musical-note .note {
+            position: absolute;
+            font-size: 20px;
+            color: #3498db;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes floatNote {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(20deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .footer {
+            background-color: var(--piano-black);
+            color: #ffffff;
+            padding: 40px 0;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .footer-logo-box {
+            background: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 200px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .footer-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .footer-column h4 {
+            color: #1abc9c;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #1abc9c;
+        }
+
+        .footer-social {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-social a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .footer-social a:hover {
+            color: #1abc9c;
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: var(--piano-black);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="welcome-container">
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Piano Master</h1>
+            <h2 class="hero-subtitle">Tu Academia de Música</h2>
+            <p>Descubre el arte del piano, desarrolla tu pasión y transforma tu talento musical con nuestros cursos especializados.</p>
+        </div>
+        <div class="hero-image">
+            <img src="/img/Logo_principal.png" alt="Piano Master Academia">
+        </div>
+    </div>
+
+    <div class="music-buttons">
+        <a class="music-button musical-note" href="/partituras.html">
+            <i class="fas fa-file-alt"></i>Partituras
+        </a>
+        <a class="music-button musical-note" href="/pianovirtual.html">
+            <i class="fas fa-file-alt"></i>Piano virtual
+        </a>
+        <a class="music-button musical-note" href="/consejos.html">
+            <i class="fas fa-lightbulb"></i>Consejos
+        </a>
+        <a class="music-button musical-note" href="/videos.html">
+            <i class="fas fa-play-circle"></i>Videos
+        </a>
+        <a class="music-button musical-note" href="/cursos.html">
+            <i class="fas fa-graduation-cap"></i>Cursos
+        </a>
+        <a class="music-button musical-note" href="/Derechos.html">
+            <i class="fas fa-copyright"></i>Derechos
+        </a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="/img/Logo_principal.png" alt="Piano Master Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster561@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2024 Piano Master. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    document.querySelectorAll('.musical-note').forEach(button => {
+        button.addEventListener('mouseenter', (e) => {
+            const note = document.createElement('span');
+            note.classList.add('note');
+            note.innerHTML = '♫';
+            note.style.left = `${Math.random() * 100}%`;
+            note.style.top = `${Math.random() * 100}%`;
+            note.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+
+            button.appendChild(note);
+
+            setTimeout(() => {
+                note.style.opacity = '1';
+                note.style.animation = 'floatNote ease-in-out';
+            }, 10);
+
+            setTimeout(() => {
+                note.remove();
+            }, 1500);
+        });
+    });
+</script>
+</body>
+</html>

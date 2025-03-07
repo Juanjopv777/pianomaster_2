@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consejos de Música y Vida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            background: linear-gradient(135deg, #1e2a78 0%, #3d5af1 70%, #22d1ee 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        .piano-keys {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+        }
+
+        .key {
+            height: 80px;
+            background: white;
+            width: 24px;
+            margin: 0 2px;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .key.black {
+            background: #333;
+            height: 50px;
+            width: 16px;
+            margin-left: -10px;
+            margin-right: -10px;
+            z-index: 2;
+        }
+
+        .consejo-container {
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1) inset;
+            padding: 40px;
+            text-align: center;
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+            margin-bottom: 100px;
+        }
+
+        .consejo-container:before {
+            content: "♪";
+            position: absolute;
+            top: -30px;
+            left: 20px;
+            font-size: 60px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .consejo-container:after {
+            content: "♫";
+            position: absolute;
+            bottom: -40px;
+            right: 30px;
+            font-size: 70px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .consejo-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            color: #1e2a78;
+            margin-bottom: 30px;
+            font-size: 2.6em;
+            letter-spacing: -0.5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1:after {
+            content: "";
+            display: block;
+            width: 70%;
+            height: 3px;
+            background: linear-gradient(to right, #3d5af1, transparent);
+            margin: 8px auto 0;
+        }
+
+        .scroll {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(to right, rgba(250, 235, 215, 0.4), rgba(255, 248, 231, 0.4));
+            border-radius: 8px;
+            border-left: 3px solid #d4af37;
+            position: relative;
+        }
+
+        #consejo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-style: italic;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.05);
+            transition: all 0.5s ease;
+            opacity: 1;
+        }
+
+        #consejo.fade {
+            opacity: 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #3d5af1 0%, #22d1ee 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(61, 90, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            transition: all 0.4s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(61, 90, 241, 0.4);
+        }
+
+        button:hover:before {
+            left: 100%;
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .musical-note {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            animation: float 3s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+            50% { transform: translateY(-20px) rotate(10deg); opacity: 0.8; }
+            100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .consejo-container {
+                padding: 30px 20px;
+                margin: 0 15px 80px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            #consejo {
+                font-size: 1.2em;
+            }
+
+            .piano-keys {
+                height: 60px;
+            }
+
+            .key {
+                height: 60px;
+                width: 20px;
+            }
+
+            .key.black {
+                height: 40px;
+                width: 14px;
+            }
+        }
+        .boton-flecha {
+            display: inline-block;
+            background-color: #4CAF50; /* Color verde */
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .boton-flecha:hover {
+            background-color: #45a049; /* Color verde más oscuro al pasar el mouse */
+        }
+
+        .boton-flecha::after {
+            content: " →"; /* Añade la flecha después del texto */
+            font-size:18px;
+         }
+
+    </style>
+</head>
+<body>
+<div class="consejo-container">
+    <h1>🎹 Consejos de Música y Vida</h1>
+    <div class="scroll">
+        <p id="consejo">Presiona el botón para recibir un consejo inspirador.</p>
+    </div>
+    <button onclick="mostrarConsejo()">Nuevo Consejo</button>
+</div>
+
+<!-- Piano keys decoration -->
+<div class="piano-keys">
+    <div class="key"></div>
+    <div class="key black"></div>
+    <div class="key"></div>
+    <div class="key black"></div>
+    <div class="key"></div>
+    <div class="key"></div>
+    <div class="key black"></div>
+    <div class="key"></div>
+    <div class="key black"></div>
+    <div class="key"></div>
+    <div class="key black"></div>
+    <div class="key"></div>
+    <div class="key"></div>
+    <div class="key black"></div>
+    <div class="key"></div>
+</div>
+
+<!-- Musical notes floating animation -->
+<script>
+    const consejos = [
+        "La música, como la vida, es un viaje de aprendizaje constante.",
+        "Cada nota que tocas es una historia que merece ser escuchada.",
+        "La práctica no hace al maestro, la pasión y la perseverancia sí.",
+        "En la música, como en la vida, los errores son solo oportunidades de mejorar.",
+        "Escucha más de lo que tocas, y aprenderás más de lo que imaginas.",
+        "La creatividad musical es un reflejo de tu mundo interior.",
+        "No temas experimentar: la innovación nace de salir de tu zona de confort.",
+        "Cada instrumento tiene un alma, aprende a escucharla.",
+        "La música te enseña que la armonía surge de la diferencia.",
+        "Tu ritmo interior es único, no lo compares con el de los demás.",
+        "La perseverancia es el ritmo constante que convierte las notas de nuestros sueños en una melodía de éxito.",
+        "Los acordes más hermosos surgen cuando la paciencia y la práctica se combinan con el deseo de seguir adelante.",
+        "Así como una sinfonía se construye nota a nota, los sueños se alcanzan paso a paso con perseverancia.",
+        "En la música y en la vida, la clave no está en evitar los errores, sino en aprender a improvisar hasta que cada uno de ellos forme parte de nuestra obra maestra.",
+        "El pulso de la vida, como el ritmo de una melodía, puede ser lento o frenético, pero siempre avanza si seguimos tocando.",
+        "La música nos enseña que no existe fracaso definitivo, solo un eco que nos invita a volver a empezar con más fuerza.",
+        "Vivir es como interpretar una partitura: no siempre podemos evitar las notas difíciles, pero podemos tocarlas con valentía hasta que suenen como parte de nosotros.",
+        "El alma que persevera es como un piano bien afinado: capaz de convertir el peso de sus teclas en armonías que inspiran y trascienden.",
+        "Como en la música, en la vida hay silencios y pausas, pero son precisamente esos momentos los que dan forma y significado a cada compás que avanzamos.",
+        "La vida es una sinfonía inacabada donde cada desafío es una nota; la perseverancia es lo que transforma el caos en una melodía eterna.",
+        "El piano no juzga tus tropiezos; escucha tu fe, porque es en la repetición de intentos donde nacen las melodías más profundas.",
+        "La música y la perseverancia comparten un alma: ambas encuentran su grandeza no en la perfección inmediata, sino en el eco persistente de quien no se rinde.",
+        "Cada nota equivocada es un recordatorio de que hasta la disonancia puede convertirse en armonía, si el corazón insiste en seguir tocando.",
+        "Así como un músico vuelve a su partitura, la vida exige que enfrentemos nuestros silencios con valentía, hasta que cada pausa resuene en triunfo.",
+        "El arte de no rendirse es el arte de escuchar el murmullo de la esperanza aun en el silencio más denso.",
+        "Cada error en el piano es una oportunidad para aprender una nueva forma de mejorar; la clave está en no rendirse."
+    ];
+
+    // Función para crear notas musicales flotantes
+    function crearNotasFlotantes() {
+        const symbols = ["♪", "♫", "♬", "♩", "♭", "♮", "♯"];
+        const body = document.body;
+
+        for (let i = 0; i < 12; i++) {
+            setTimeout(() => {
+                const nota = document.createElement('div');
+                nota.className = 'musical-note';
+                nota.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                nota.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                nota.style.left = (Math.random() * 90 + 5) + '%';
+                nota.style.top = (Math.random() * 80 + 10) + '%';
+                nota.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                nota.style.animationDelay = (Math.random() * 2) + 's';
+                body.appendChild(nota);
+
+                setTimeout(() => {
+                    nota.remove();
+                }, 6000);
+            }, i * 300);
+        }
+    }
+
+    // Función para obtener un consejo aleatorio sin repetir el anterior
+    let consejoAnterior = "";
+    function mostrarConsejo() {
+        const consejoElemento = document.getElementById('consejo');
+
+        // Añadir clase para efecto de desvanecimiento
+        consejoElemento.classList.add('fade');
+
+        setTimeout(() => {
+            // Filtrar el consejo anterior para no repetirlo
+            const consejosDisponibles = consejos.filter(c => c !== consejoAnterior);
+            const consejoAleatorio = consejosDisponibles[Math.floor(Math.random() * consejosDisponibles.length)];
+            consejoAnterior = consejoAleatorio;
+
+            // Actualizar y mostrar el nuevo consejo
+            consejoElemento.textContent = consejoAleatorio;
+            consejoElemento.classList.remove('fade');
+
+            // Crear efecto de notas musicales flotantes
+            crearNotasFlotantes();
+
+            // Simular teclas de piano aleatorias presionadas
+            const teclas = document.querySelectorAll('.key');
+            for (let i = 0; i < 3; i++) {
+                const teclaRandom = teclas[Math.floor(Math.random() * teclas.length)];
+                setTimeout(() => {
+                    teclaRandom.style.transform = 'translateY(5px)';
+                    setTimeout(() => {
+                        teclaRandom.style.transform = 'translateY(0)';
+                    }, 200);
+                }, i * 150);
+            }
+        }, 300);
+    }
+
+    // Mostrar un consejo aleatorio al cargar la página
+    window.onload = function() {
+        mostrarConsejo();
+    };
+</script>
+</body>
+</html>

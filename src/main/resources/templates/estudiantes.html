@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html xmlns:th="http://wwww.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia Virtual Piano Master</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+ :root {
+     --primary-color: #1c1c1c;
+     --secondary-color: #f4f4f4;
+     --accent-color: #3498db;
+     --piano-black: #001a33;
+     --success-color: #2ecc71;
+     --warning-color: #e67e22;
+     --danger-color: #e74c3c;
+ }
+
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: 'Montserrat', sans-serif;
+     background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
+     color: var(--primary-color);
+     line-height: 1.6;
+ }
+
+ /* Navbar */
+ .navbar {
+     background-color: var(--piano-black);
+     padding: 15px 0;
+     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+ }
+
+ .navbar-brand {
+     color: white;
+     font-weight: 600;
+     display: flex;
+     align-items: center;
+ }
+
+ .logo-container {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+ }
+
+ .logo-img {
+     background-color: white;
+     width: 40px;
+     height: 40px;
+     border-radius: 50%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .nav-menu {
+     display: flex;
+     align-items: center;
+     gap: 15px;
+     flex-wrap: wrap;
+     justify-content: center;
+ }
+
+ /* Containers */
+ .container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 2rem;
+ }
+
+ .welcome-container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 3rem 2rem;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     text-align: center;
+ }
+
+ /* Hero Section */
+ .hero-section {
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+     width: 100%;
+     margin-bottom: 3rem;
+     gap: 2rem;
+ }
+
+ .hero-content {
+     flex: 1;
+     text-align: left;
+     padding-right: 2rem;
+ }
+
+ .hero-title {
+     font-size: 3rem;
+     font-weight: 700;
+     color: var(--primary-color);
+     margin-bottom: 1rem;
+     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+ }
+
+ .hero-subtitle {
+     font-size: 1.5rem;
+     color: var(--accent-color);
+     margin-bottom: 1.5rem;
+ }
+
+ .hero-text {
+     font-size: 1.1rem;
+     margin-bottom: 2rem;
+     color: #555;
+ }
+
+ .hero-image {
+     flex: 1;
+     max-width: 500px;
+     position: relative;
+ }
+
+ .hero-image img {
+     width: 100%;
+     border-radius: 15px;
+     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+ }
+
+ /* Navigation Buttons - New Style */
+ .music-buttons {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: center;
+     gap: 1.5rem;
+     margin-top: 2rem;
+     width: 100%;
+ }
+
+ .music-button {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 220px;
+     height: 60px;
+     text-decoration: none;
+     color: #000;
+     font-weight: 600;
+     transition: all 0.3s ease;
+     position: relative;
+     overflow: hidden;
+     border-radius: 30px;
+     background: linear-gradient(90deg, #B5D6FF 0%, #B5B3FF 100%);
+     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+     font-size: 1rem;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+ }
+
+ .music-button i {
+     margin-right: 10px;
+     font-size: 1.2rem;
+ }
+
+ .music-button:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+ }
+
+ .music-button:before {
+     content: '';
+     position: absolute;
+     top: -10px;
+     left: -30px;
+     width: 60px;
+     height: 100px;
+     background: rgba(255, 255, 255, 0.3);
+     transform: rotate(20deg);
+     transition: transform 0.4s ease;
+ }
+
+ .music-button:hover:before {
+     transform: translateX(300px) rotate(20deg);
+ }
+
+ /* Piano key decorations */
+ .piano-keys {
+     position: absolute;
+     z-index: -1;
+ }
+
+ .piano-keys.left {
+     top: -15px;
+     left: -30px;
+     transform: rotate(-10deg);
+ }
+
+ .piano-keys.right {
+     bottom: -15px;
+     right: -30px;
+     transform: rotate(10deg);
+ }
+
+ /* Welcome section styling */
+ .welcome-section {
+     padding: 4rem 0;
+     background: linear-gradient(135deg, #ffffff 0%, #f0f8ff 100%);
+     border-radius: 20px;
+     box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+     margin-bottom: 3rem;
+     text-align: center;
+ }
+
+ .welcome-title {
+     font-size: 2.5rem;
+     color: var(--piano-black);
+     margin-bottom: 1.5rem;
+     position: relative;
+     display: inline-block;
+ }
+
+ .welcome-title:after {
+     content: '';
+     position: absolute;
+     width: 80px;
+     height: 3px;
+     background: var(--accent-color);
+     bottom: -10px;
+     left: 50%;
+     transform: translateX(-50%);
+ }
+
+ .welcome-text {
+     max-width: 800px;
+     margin: 0 auto 2rem;
+     font-size: 1.1rem;
+     color: #555;
+     line-height: 1.8;
+ }
+
+ .welcome-cta {
+     background: linear-gradient(135deg, var(--accent-color) 0%, #2980b9 100%);
+     color: white;
+     padding: 12px 30px;
+     border-radius: 30px;
+     font-weight: 600;
+     display: inline-block;
+     text-decoration: none;
+     transition: all 0.3s ease;
+     margin-top: 1rem;
+ }
+
+ .welcome-cta:hover {
+     transform: scale(1.05);
+     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+     color: white;
+ }
+
+ /* Button Section */
+ .button-section {
+     padding: 3rem 0;
+     background-color: var(--secondary-color);
+     text-align: center;
+     margin-top: 3rem;
+ }
+
+ .button-section-title {
+     font-size: 2rem;
+     color: var(--primary-color);
+     margin-bottom: 2rem;
+ }
+
+ /* Card and Courses Section */
+ .courses-section {
+     padding: 4rem 0;
+ }
+
+ .section-title {
+     text-align: center;
+     font-size: 2.2rem;
+     margin-bottom: 3rem;
+     color: var(--piano-black);
+     position: relative;
+ }
+
+ .section-title:after {
+     content: '';
+     position: absolute;
+     width: 80px;
+     height: 3px;
+     background: var(--accent-color);
+     bottom: -15px;
+     left: 50%;
+     transform: translateX(-50%);
+ }
+
+ .course-cards {
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+     gap: 2rem;
+     margin-top: 2rem;
+ }
+
+ .course-card {
+     background: white;
+     border-radius: 15px;
+     overflow: hidden;
+     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+     transition: all 0.3s ease;
+ }
+
+ .course-card:hover {
+     transform: translateY(-10px);
+     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+ }
+
+ .course-img {
+     width: 100%;
+     height: 180px;
+     object-fit: cover;
+ }
+
+ .course-content {
+     padding: 1.5rem;
+ }
+
+ .course-title {
+     font-size: 1.3rem;
+     margin-bottom: 0.5rem;
+     color: var(--piano-black);
+ }
+
+ .course-desc {
+     color: #666;
+     margin-bottom: 1rem;
+     font-size: 0.95rem;
+ }
+
+ .course-btn {
+     display: inline-block;
+     padding: 8px 20px;
+     background: linear-gradient(90deg, #B5D6FF 0%, #B5B3FF 100%);
+     color: var(--primary-color);
+     border-radius: 30px;
+     font-weight: 600;
+     text-decoration: none;
+     transition: all 0.3s ease;
+ }
+
+ .course-btn:hover {
+     transform: scale(1.05);
+     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+ }
+
+ /* Styled Buttons like Image 2 */
+ .styled-button {
+     position: relative;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 220px;
+     height: 60px;
+     margin: 0 auto;
+     background: linear-gradient(90deg, #B5D6FF 0%, #B5B3FF 100%);
+     border-radius: 30px;
+     font-weight: 600;
+     letter-spacing: 1px;
+     text-transform: uppercase;
+     color: var(--primary-color);
+     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+     overflow: hidden;
+     text-decoration: none;
+     transition: all 0.3s ease;
+ }
+
+ .styled-button:hover {
+     transform: translateY(-5px);
+     box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+ }
+
+ .piano-key-left {
+     position: absolute;
+     left: -20px;
+     top: -10px;
+     z-index: 1;
+ }
+
+ .piano-key-right {
+     position: absolute;
+     right: -20px;
+     bottom: -10px;
+     z-index: 1;
+ }
+
+ /* Curso text */
+ .button-text {
+     position: relative;
+     z-index: 2;
+     font-size: 1.2rem;
+ }
+
+ /* Footer */
+ .footer {
+     background-color: var(--piano-black);
+     color: #ffffff;
+     padding: 40px 0;
+     margin-top: 3rem;
+ }
+
+ .footer-container {
+     max-width: 1200px;
+     margin: 0 auto;
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+     gap: 20px;
+     padding: 0 2rem;
+ }
+
+ .footer-logo-box {
+     background: white;
+     padding: 10px;
+     text-align: center;
+     border-radius: 10px;
+     margin: 0 auto;
+     width: 200px;
+     height: 100px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .footer-logo-box img {
+     max-width: 100%;
+     max-height: 100%;
+     object-fit: contain;
+ }
+
+ .footer-info {
+     text-align: center;
+     margin-top: 10px;
+ }
+
+ .footer-column h4 {
+     color: #1abc9c;
+     margin-bottom: 15px;
+ }
+
+ .footer-links {
+     list-style: none;
+     padding: 0;
+ }
+
+ .footer-links li {
+     margin-bottom: 10px;
+ }
+
+ .footer-links a {
+     color: #ffffff;
+     text-decoration: none;
+     transition: color 0.3s;
+ }
+
+ .footer-links a:hover {
+     color: #1abc9c;
+ }
+
+ .footer-social {
+     margin-top: 15px;
+     display: flex;
+     gap: 10px;
+ }
+
+ .footer-social a {
+     text-decoration: none;
+     color: #ffffff;
+     font-size: 14px;
+ }
+
+ .footer-social a:hover {
+     color: #1abc9c;
+ }
+
+ .footer-bottom {
+     margin-top: 20px;
+     text-align: center;
+     font-size: 14px;
+     padding-top: 15px;
+     border-top: 1px solid rgba(255, 255, 255, 0.2);
+     background-color: var(--piano-black);
+     color: #ffffff;
+     padding-bottom: 15px;
+ }
+
+ /* Logout Button */
+ .btn-logout {
+     background-color: #e74c3c;
+     color: white;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 30px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     font-weight: 600;
+ }
+
+ .btn-logout:hover {
+     background-color: #c0392b;
+     transform: scale(1.05);
+ }
+
+ /* Responsive Adjustments */
+ @media (max-width: 992px) {
+     .hero-section {
+         flex-direction: column;
+     }
+
+     .hero-content {
+         text-align: center;
+         padding-right: 0;
+         margin-bottom: 2rem;
+     }
+
+     .nav-menu {
+         margin-top: 15px;
+         justify-content: center;
+     }
+ }
+
+ @media (max-width: 768px) {
+     .music-button {
+         width: 180px;
+         height: 55px;
+         font-size: 0.9rem;
+     }
+
+     .hero-title {
+         font-size: 2.5rem;
+     }
+
+     .action-buttons {
+         flex-direction: column;
+         gap: 5px;
+     }
+
+     .welcome-title {
+         font-size: 2rem;
+     }
+
+     .styled-button {
+         width: 180px;
+     }
+ }
+
+ @media (max-width: 576px) {
+     .container,
+     .welcome-container {
+         padding: 1rem;
+     }
+
+     .hero-title {
+         font-size: 2rem;
+     }
+
+     .hero-subtitle {
+         font-size: 1.2rem;
+     }
+
+     .welcome-title {
+         font-size: 1.8rem;
+     }
+
+     .music-buttons {
+         gap: 1rem;
+     }
+
+     .music-button {
+         width: 160px;
+         height: 50px;
+         font-size: 0.8rem;
+     }
+
+     .styled-button {
+         width: 160px;
+         height: 50px;
+     }
+
+     .button-text {
+         font-size: 1rem;
+     }
+ }
+
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <div class="logo-container">
+                <div class="logo-img">
+                    <i class="fas fa-music" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <span>Academia Virtual Piano Master</span>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <div class="nav-menu ms-auto">
+                <a class="styled-button" th:href="@{/estudiantes}">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                            <rect x="24" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Estudiantes</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a class="styled-button" href="/partituras.html">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Partituras</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+                <div></div>
+
+
+                <a class="styled-button" href="/pianovirtual.html">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Piano virtual</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a class="styled-button" href="/consejos.html">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Consejos</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a class="styled-button" href="/videos.html">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Videos</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a class="styled-button" href="/cursos.html">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Cursos</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+
+                <a class="styled-button" href="/Derechos.html">
+                    <div class="piano-key-left">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                    <span class="button-text">Derechos</span>
+                    <div class="piano-key-right">
+                        <svg width="40" height="40" viewBox="0 0 60 60">
+                            <rect x="0" y="10" width="10" height="40" fill="black" />
+                            <rect x="12" y="10" width="10" height="40" fill="black" />
+                        </svg>
+                    </div>
+                </a>
+            </div>
+
+
+
+            <script>
+                function irAlIndex() {
+                    // Reemplazar la entrada actual del historial con INDEX.HTML
+                    window.location.replace("INDEX.HTML");
+
+                    // Alternativa más segura para evitar el retorno:
+                    // Limpiar cualquier información de sesión antes de salir
+                    if (typeof(Storage) !== "undefined") {
+                        localStorage.removeItem("sesionUsuario"); // Asumiendo que usas este nombre para la sesión
+                        sessionStorage.clear();
+                    }
+                }
+            </script>
+
+            <button class="btn-logout ms-3" onclick="irAlIndex()">
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Welcome Section -->
+<div class="welcome-container">
+    <div class="welcome-section">
+        <h1 class="welcome-title">Bienvenido a Piano Master</h1>
+        <p class="welcome-text">Descubre el fascinante mundo del piano con nuestra academia virtual. Ofrecemos cursos adaptados a todos los niveles, desde principiantes hasta avanzados. Nuestra metodología única combina teoría musical, técnica y práctica para que puedas desarrollar tus habilidades pianísticas de manera efectiva y divertida.</p>
+        <a href="#cursos" class="welcome-cta">Explorar Cursos</a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h2 class="hero-title">Aprende Piano a Tu Ritmo</h2>
+            <h3 class="hero-subtitle">Metodología Flexible y Personalizada</h3>
+            <p class="hero-text">En Academia Virtual Piano Master creemos que cada estudiante tiene su propio camino musical. Te ofrecemos recursos adaptados a tu nivel, tiempo y estilo de aprendizaje. Nuestros instructores profesionales te guiarán en cada paso del proceso.</p>
+            <p class="hero-text">Explora nuestras secciones y descubre todo lo que tenemos para ofrecerte en tu viaje musical.</p>
+        </div>
+        <div class="hero-image">
+            <img src="/img/Logo_principal.png" alt="Piano con partituras y estudiante practicando">
+        </div>
+    </div>
+
+    <!-- Courses Section -->
+    <section class="courses-section" id="cursos">
+        <h2 class="section-title">Nuestros Cursos Destacados</h2>
+        <div class="course-cards">
+            <div class="course-card">
+                <img src="/img/Logo_principal.png" alt="Curso para principiantes" class="course-img">
+                <div class="course-content">
+                    <h3 class="course-title">Piano para Principiantes</h3>
+                    <p class="course-desc">Aprende desde cero con este curso diseñado para quienes nunca han tocado un piano.</p>
+                    <a href="#" class="course-btn">Ver Curso</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <img src="/img/Logo_principal.png" alt="Curso de teoría musical" class="course-img">
+                <div class="course-content">
+                    <h3 class="course-title">Teoría Musical Aplicada</h3>
+                    <p class="course-desc">Domina los fundamentos teóricos y aplícalos directamente en el piano.</p>
+                    <a href="#" class="course-btn">Ver Curso</a>
+                </div>
+            </div>
+            <div class="course-card">
+                <img src="/img/Logo_principal.png" alt="Curso de técnica avanzada" class="course-img">
+                <div class="course-content">
+                    <h3 class="course-title">Técnica Avanzada</h3>
+                    <p class="course-desc">Perfecciona tu técnica con ejercicios específicos y piezas desafiantes.</p>
+                    <a href="#" class="course-btn">Ver Curso</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Button Section with Call to Action -->
+    <div class="button-section">
+        <h2 class="button-section-title">¿Listo para comenzar tu viaje musical?</h2>
+        <p class="welcome-text">Navega por nuestros recursos y encuentra todo lo que necesitas para desarrollar tus habilidades pianísticas.</p>
+        <div class="music-buttons">
+            <a class="music-button" href="/partituras.html">
+                <i class="fas fa-file-alt"></i>Partituras
+            </a>
+            <a class="music-button" href="/pianovirtual.html">
+                <i class="fas fa-keyboard"></i>Piano Virtual
+            </a>
+            <a class="music-button" href="/videos.html">
+                <i class="fas fa-play-circle"></i>Videos
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="img/Logo_principal.png" alt="Piano Master Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+
+        <!-- Sección de enlaces populares -->
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster561@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 Piano Master. Todos los derechos reservados.</p>
+    </div>
+</footer>

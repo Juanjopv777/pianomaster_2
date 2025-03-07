@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel Básico - Acordes Mayores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, #2b2440 0%, #3c3b6e 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-bottom: 5px solid #4CAF50;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Contenedor principal */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Barra de progreso y título de nivel */
+        /* Estilos para la barra de progreso en tiempo real */
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.course-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2b2440;
+}
+
+.progress-track {
+    width: 200px;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 4px;
+    width: 0%; /* Se actualiza vía JS */
+    transition: width 0.8s ease-in-out;
+}
+
+.progress-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Estilos para valoración en tiempo real */
+.rating-container {
+    margin: 1rem 1.2rem;
+}
+
+.rating-stars-interactive {
+    font-size: 1.5rem;
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rating-stars-interactive input {
+    display: none;
+}
+
+.rating-stars-interactive label {
+    color: #ccc;
+    transition: color 0.2s ease;
+    display: inline-block;
+    padding: 0 2px;
+}
+
+.rating-stars-interactive label:hover,
+.rating-stars-interactive label:hover ~ label,
+.rating-stars-interactive input:checked ~ label {
+    color: #FFD700;
+}
+
+.rating-stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.rating-value {
+    font-weight: 700;
+    color: #333;
+}
+
+.rating-votes {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+/* Componentes visuales de tiempo real */
+.time-spent {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
+    background-color: #f5f5f5;
+    border-top: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.time-icon {
+    margin-right: 8px;
+    color: #2b2440;
+}
+
+.time-counter {
+    font-weight: 600;
+    color: #2b2440;
+}
+
+/* Animación para indicar que está en tiempo real */
+@keyframes pulse-subtle {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+.real-time-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    margin-left: 8px;
+    animation: pulse-subtle 2s infinite;
+}
+
+/* Estilos para tooltip de tiempo real */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.8rem;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+        /* Título de módulos */
+        .module-title {
+            font-size: 2rem;
+            margin: 2rem 0;
+            color: #2b2440;
+            position: relative;
+            padding-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .module-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background-color: #4CAF50;
+        }
+
+        /* Videos y lecciones */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+
+        .video-item {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-item h2 {
+            padding: 1.2rem;
+            background-color: #2b2440;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .video-item iframe {
+            width: 100%;
+            height: 280px;
+            border: none;
+        }
+
+        .lesson-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 1.2rem;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Valoración con estrellas */
+        .rating-container {
+            margin: 0.5rem 1.2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .rating-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .rating-stars {
+            font-size: 1.2rem;
+            color: #FFD700;
+        }
+
+        /* Botón de navegación */
+        .boton-flecha {
+            display: inline-block;
+            margin: 1.2rem;
+            padding: 0.8rem 1.5rem;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .boton-flecha:hover {
+            background-color: #388E3C;
+        }
+
+        .boton-flecha::after {
+            content: " →";
+        }
+
+        /* Módulos con marcador de completado */
+        .module-card {
+            position: relative;
+        }
+
+        .completed-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* Pie de página */
+        .footer {
+            background-color: #2b2440;
+            color: #fff;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 0 1.5rem;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-logo-box {
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo-box img {
+            max-width: 180px;
+        }
+
+        .footer-info {
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .footer h4 {
+            margin-bottom: 1.2rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #4CAF50;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.7rem;
+        }
+
+        .footer-links a, .footer-social a {
+            color: #fff;
+            opacity: 0.8;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-links a:hover, .footer-social a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        /* Estilos para módulos completados */
+        .module-completed {
+            position: relative;
+        }
+
+        .check-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            z-index: 10;
+        }
+
+        /* Media queries para responsividad */
+        @media (max-width: 768px) {
+            .video-container {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .module-title {
+                font-size: 1.6rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+        }
+
+        /* Añadir HTML para valoraciones */
+        .course-rating {
+            padding: 0.5rem 1.2rem 1.2rem;
+        }
+
+        .rating-stars {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-top: 0.2rem;
+        }
+
+        .rating-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Animaciones */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .featured-course {
+            animation: pulse 2s infinite;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <h1>🎹 Nivel Básico - Acordes Mayores</h1>
+    <p class="subtitle">Domina los fundamentos de los acordes mayores en el piano con nuestras lecciones especialmente diseñadas</p>
+</header>
+<div class="progress-container">
+    <h2 class="course-title">Nivel Básico: Fundamentos Teóricos</h2>
+    <div class="progress-bar">
+        <div class="progress-track">
+            <div class="progress-fill"></div>
+        </div>
+        <span class="progress-text">0/4</span>
+    </div>
+</div>
+<main class="video-container">
+    <div class="video-item">
+        <h2>🎶 Lección 1</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/YCAHdiAG_3E?si=aDKEmJUBPUXCjozL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="lesson-info">
+            <div class="course-rating">
+                <div class="rating-label">Valoración de estudiantes:</div>
+                <div class="rating-stars">⭐⭐⭐⭐⭐ (4.8)</div>
+            </div>
+
+            <span>📝 Fundamentos</span>
+            <span>⏱ 7:31min</span>
+        </div>
+
+    </div>
+    <div class="video-item">
+        <h2>🎶 Lección 2</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/s3xW6MVclnA?si=K1MHANCOMhXub6ZP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="lesson-info">
+            <span>📝 Práctica Básica</span>
+            <span>⏱ 10:48min</span>
+        </div>
+    </div>
+    <div class="video-item">
+        <h2>📖 Lección 3</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/hAjvEca65yM?si=66g61wyjuYiOIwFh"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+        <div class="lesson-info">
+            <div class="course-rating">
+                <div class="rating-label">Valoración de estudiantes:</div>
+                <div class="rating-stars">⭐⭐⭐⭐⭐ (4.8)</div>
+            </div>
+            <span>📝 Ejercicios</span>
+
+            <span>⏱ 12:22min</span>
+        </div>
+    </div>
+    <div class="video-item">
+        <h2>🎼 Lección 4</h2>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/jxjx9jI5Ljs?si=44Z6F7I5UhPqorMA"
+                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+        <div class="lesson-info">
+            <div class="course-rating">
+                <div class="rating-label">Valoración de estudiantes:</div>
+                <div class="rating-stars">⭐⭐⭐⭐⭐ (4.8)</div>
+            </div>
+            <span>📝 Práctica Avanzada</span>
+            <span>⏱ 11min</span>
+        </div>
+        <a href="/cursos.html" class="boton-flecha">Ir a Cursos </a>
+    </div>
+</main>
+<footer class="footer">
+    <div class="footer-container">
+
+        <div class="footer-column">
+            <div class="footer-logo-box">
+                <img src="img/Logo_principal.png" alt="Piano Shop Logo">
+            </div>
+            <p class="footer-info">Innovar en la música es nuestra pasión. Tu academia especializada en pianos y música.</p>
+        </div>
+
+        <!-- Sección de enlaces populares -->
+        <div class="footer-column">
+            <h4>Populares</h4>
+            <ul class="footer-links">
+                <li><a href="#">Quiénes Somos</a></li>
+                <li><a href="#">Clases Destacadas</a></li>
+                <li><a href="#">Método de Aprendizaje</a></li>
+                <li><a href="#">Eventos y Conciertos</a></li>
+                <li><a href="#">Testimonios</a></li>
+            </ul>
+        </div>
+
+        <!-- Contacto -->
+        <div class="footer-column">
+            <h4>Conéctate con Nosotros</h4>
+            <p>📍 Dirección: Tv 68 F # 78 -10, Ciudad Bogotá</p>
+            <p>📞 Tel: +57 3138540053</p>
+            <p>✉️ Email: pianomaster561@gmail.com</p>
+            <div class="footer-social">
+                <a href="#">Facebook</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">YouTube</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 Piano Master. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script>
+    // Variables para el seguimiento del tiempo
+let startTime;
+let timeSpent = 0;
+let timerInterval;
+let totalModules = 4; // Total de módulos en el curso
+let completedModules = 0; // Módulos completados inicialmente
+let currentRatings = [4.7, 4.9, 4.6, 4.8]; // Valoraciones iniciales para cada módulo
+
+// Iniciar el contador de tiempo cuando la página carga
+document.addEventListener('DOMContentLoaded', function() {
+    startTime = new Date();
+    startTimeTracking();
+    initializeProgress();
+    setupRealTimeRatings();
+});
+
+// Función para iniciar el seguimiento del tiempo
+function startTimeTracking() {
+    // Actualiza el contador cada segundo
+    timerInterval = setInterval(updateTimeSpent, 1000);
+}
+
+// Actualizar el tiempo mostrado
+function updateTimeSpent() {
+    const now = new Date();
+    timeSpent = Math.floor((now - startTime) / 1000);
+
+    // Convertir segundos a formato hh:mm:ss
+    const hours = Math.floor(timeSpent / 3600);
+    const minutes = Math.floor((timeSpent % 3600) / 60);
+    const seconds = timeSpent % 60;
+
+    // Formatear tiempo con ceros a la izquierda si es necesario
+    const formattedTime =
+        (hours > 0 ? hours.toString().padStart(2, '0') + ':' : '') +
+        minutes.toString().padStart(2, '0') + ':' +
+        seconds.toString().padStart(2, '0');
+
+    // Actualizar todos los contadores de tiempo en la página
+    document.querySelectorAll('.time-counter').forEach(counter => {
+        counter.textContent = formattedTime;
+    });
+
+    // Simular progreso automático (para demostración)
+    if (timeSpent % 30 === 0 && completedModules < totalModules) {
+        updateProgress();
+    }
+}
+
+// Inicializar la barra de progreso
+function initializeProgress() {
+    // Obtener elementos de progreso
+    const progressFill = document.querySelector('.progress-fill');
+    const progressText = document.querySelector('.progress-text');
+
+    // Establecer progreso inicial basado en módulos completados
+    updateProgressDisplay();
+
+    // Agregar indicadores de tiempo real a los módulos
+    document.querySelectorAll('.video-item').forEach((item, index) => {
+        // Agregar contador de tiempo a cada módulo
+        if (!item.querySelector('.time-spent')) {
+            const timeSpentEl = document.createElement('div');
+            timeSpentEl.className = 'time-spent';
+            timeSpentEl.innerHTML = `
+                <span class="time-icon">⏱</span>
+                <span>Tiempo en este módulo: <span class="time-counter">00:00</span></span>
+                <span class="tooltip">
+                    <span class="real-time-indicator"></span>
+                    <span class="tooltip-text">En tiempo real</span>
+                </span>
+            `;
+
+            // Insertar después de lesson-info
+            const lessonInfo = item.querySelector('.lesson-info');
+            if (lessonInfo) {
+                lessonInfo.parentNode.insertBefore(timeSpentEl, lessonInfo.nextSibling);
+            } else {
+                item.appendChild(timeSpentEl);
+            }
+        }
+
+        // Añadir marca de completado a módulos ya finalizados
+        if (index < completedModules) {
+            markModuleAsCompleted(item);
+        }
+    });
+}
+
+// Actualizar el progreso (simulación)
+function updateProgress() {
+    completedModules++;
+
+    // Actualizar visualización
+    updateProgressDisplay();
+
+    // Marcar el módulo como completado
+    const modules = document.querySelectorAll('.video-item');
+    if (completedModules <= modules.length) {
+        markModuleAsCompleted(modules[completedModules-1]);
+    }
+}
+
+// Actualizar visualización del progreso
+function updateProgressDisplay() {
+    const progressPercentage = (completedModules / totalModules) * 100;
+    const progressFill = document.querySelector('.progress-fill');
+    const progressText = document.querySelector('.progress-text');
+
+    // Actualizar barra de progreso con animación
+    progressFill.style.width = `${progressPercentage}%`;
+
+    // Actualizar texto de progreso
+    progressText.textContent = `${completedModules}/${totalModules}`;
+}
+
+// Marcar módulo como completado
+function markModuleAsCompleted(moduleElement) {
+    // Evitar duplicados
+    if (!moduleElement.querySelector('.check-icon')) {
+        const checkIcon = document.createElement('div');
+        checkIcon.className = 'check-icon';
+        checkIcon.textContent = '✓';
+        moduleElement.appendChild(checkIcon);
+
+        // Añadir clase para estilos adicionales
+        moduleElement.classList.add('module-completed');
+    }
+}
+
+// Configurar sistema de valoración en tiempo real
+function setupRealTimeRatings() {
+    document.querySelectorAll('.video-item').forEach((item, index) => {
+        // Buscar o crear contenedor de valoración
+        let ratingContainer = item.querySelector('.course-rating');
+        if (!ratingContainer) {
+            ratingContainer = document.createElement('div');
+            ratingContainer.className = 'course-rating';
+            item.appendChild(ratingContainer);
+        }
+
+        // Establecer contenido para valoración interactiva
+        ratingContainer.innerHTML = `
+            <div class="rating-label">Valoración de estudiantes:</div>
+            <div class="rating-stars-interactive">
+                <input type="radio" id="star5-${index}" name="rating-${index}" value="5" />
+                <label for="star5-${index}">★</label>
+                <input type="radio" id="star4-${index}" name="rating-${index}" value="4" />
+                <label for="star4-${index}">★</label>
+                <input type="radio" id="star3-${index}" name="rating-${index}" value="3" />
+                <label for="star3-${index}">★</label>
+                <input type="radio" id="star2-${index}" name="rating-${index}" value="2" />
+                <label for="star2-${index}">★</label>
+                <input type="radio" id="star1-${index}" name="rating-${index}" value="1" />
+                <label for="star1-${index}">★</label>
+            </div>
+            <div class="rating-stats">
+                <span class="rating-value">${currentRatings[index]}</span>
+                <span class="rating-votes">(${Math.floor(Math.random() * 100) + 50} valoraciones)</span>
+                <span class="tooltip">
+                    <span class="real-time-indicator"></span>
+                    <span class="tooltip-text">Actualizado en tiempo real</span>
+                </span>
+            </div>
+        `;
+
+        // Añadir listeners para los cambios de valoración
+        ratingContainer.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.addEventListener('change', function() {
+                updateRating(index, this.value);
+            });
+        });
+    });
+
+    // Simular actualizaciones periódicas de valoraciones (para demostración)
+    setInterval(() => {
+        const randomModuleIndex = Math.floor(Math.random() * currentRatings.length);
+        const randomChange = (Math.random() * 0.2) - 0.1; // Cambio aleatorio entre -0.1 y 0.1
+        updateRating(randomModuleIndex, null, randomChange);
+    }, 15000); // Cada 15 segundos
+}
+
+// Actualizar valoración de un módulo
+function updateRating(moduleIndex, userRating, randomChange = 0) {
+    // Si hay valoración de usuario, actualizar con ese valor
+    if (userRating) {
+        // Añadir valoración de usuario al promedio (simulado)
+        const currentVotes = Math.floor(Math.random() * 100) + 50;
+        currentRatings[moduleIndex] = (
+            (currentRatings[moduleIndex] * currentVotes + parseInt(userRating)) /
+            (currentVotes + 1)
+        ).toFixed(1);
+    } else {
+        // Actualización automática (simulada)
+        let newRating = parseFloat(currentRatings[moduleIndex]) + randomChange;
+        // Mantener valoración entre 1 y 5
+        newRating = Math.min(5, Math.max(1, newRating));
+        currentRatings[moduleIndex] = newRating.toFixed(1);
+    }
+
+    // Actualizar visualización
+    const ratingValue = document.querySelectorAll('.rating-value')[moduleIndex];
+    if (ratingValue) {
+        // Animar cambio
+        ratingValue.style.transition = 'color 0.3s';
+        ratingValue.style.color = userRating ? '#4CAF50' : '#333';
+        ratingValue.textContent = currentRatings[moduleIndex];
+
+        // Restablecer color después de la animación
+        setTimeout(() => {
+            ratingValue.style.color = '#333';
+        }, 1000);
+    }
+}
+</script>
+</body>
+</html>
